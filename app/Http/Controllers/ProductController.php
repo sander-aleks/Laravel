@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Modles\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -26,8 +26,6 @@ class ProductController extends Controller
         return Inertia::Render('ProductAdd',[
             'Product' => Product::all()
         ]);
-
-        
     }
 
     /**
@@ -35,7 +33,25 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'image_path' => 'required|image',
+        ]);
+
+        $path = Storage::putFile('products', $request->file('image_path'));
+
+        Product::create([
+            'category_id' => $request['category_id'],
+            'name' => $request['name'],
+            'description' => $request['description'],
+            'price' => $request['price'],
+            'image_path' => $path,
+        ]);
+
+        return redirect()->route('products.index');
+
     }
 
     /**
@@ -59,7 +75,26 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'image_path' => 'required|image',
+        ]);
+        
+        Storage::delete($product->image_path);
+        $path = Storage::putFile('products', $request->file('image_path'));
+
+        $product->update([
+            'category_id' => $request['category_id'],
+            'name' => $request['name'],
+            'description' => $request['description'],
+            'price' => $request['price'],
+            'image_path' => $path,
+        ]);
+
+        return redirect()->route('products.index');
+
     }
 
     /**

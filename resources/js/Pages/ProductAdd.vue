@@ -6,18 +6,18 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
-const props = defineProps(['genres'])
+const props = defineProps(['categories'])
 
 const form = useForm({
-    Name: '',
+    name: '',
     description: '',
-    Product_id: '',
-    Price: '',
+    category_id: '',
+    price: '',
     image_path: '',
 });
 
 const submit = () => {
-    form.post(route('Product.store'));
+    form.post(route('products.store'));
 };
 </script>
 
@@ -33,7 +33,7 @@ const submit = () => {
                         id="Name"
                         type="text"
                         class="mt-1 block w-full"
-                        v-model="form.title"
+                        v-model="form.name"
                         required
                     />
 
@@ -53,13 +53,13 @@ const submit = () => {
                     <InputError class="mt-2" :message="form.errors.description" />
                 </div>
                 <div class="mt-4">
-                    <InputLabel for="category" value="Category" />
+                    <InputLabel for="categories" value="Category" />
 
-                    <select id="category" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" v-model="form.genre_id" required>
-                        <option v-for="category in category" :value="category.id">{{ category.name }}</option>
+                    <select id="categories" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" v-model="form.genre_id" required>
+                        <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
                     </select>
 
-                    <InputError class="mt-2" :message="form.errors.genre_id" />
+                    <InputError class="mt-2" :message="form.errors.category_id" />
                 </div>
                 <div class="mt-4">
                     <InputLabel for="price" value="Product Price" />

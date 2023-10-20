@@ -12,16 +12,14 @@ class CategoryController extends Controller
     public function index()
     {
         return Inertia::Render('Category', [
-            'Category' => Category::all(),
+            'categories' => Category::all(),
         ]);
     }
 
   
     public function create()
     {
-        return Inertia::Render('CategoryAdd',[
-            'Category' => Category::all()
-        ]);
+        return Inertia::Render('CategoryAdd');
     }
 
     
@@ -31,7 +29,7 @@ class CategoryController extends Controller
             'name' => 'required'
         ]));
 
-        return redirect()->route('category.index');
+        return redirect()->route('categories.index');
 
     }
 
@@ -48,7 +46,10 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return Inertia::render('CategoryEdit', [
+            'category' => $category
+        ]); 
+
     }
 
     /**
@@ -56,7 +57,12 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $category->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route (route: 'categories.index');
+
     }
 
     /**
@@ -64,6 +70,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('categories.index');
+
     }
 }
